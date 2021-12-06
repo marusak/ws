@@ -1,13 +1,13 @@
 FROM registry.fedoraproject.org/fedora:35
 
-EXPOSE 5001
+EXPOSE 9090
+EXPOSE 8080
 
-WORKDIR "/ws"
+RUN dnf -y install 'dnf-command(copr)' && \
+    dnf -y copr enable packit/cockpit-project-cockpit-16687 && \
+    dnf -y install cockpit-ws && \
+    dnf clean all
 
-RUN dnf install -y npm cockpit-ws && dnf clean all && npm install socket.io
+ENTRYPOINT [ "/usr/libexec/cockpit-ws" ]
 
-COPY server.js .
-
-ENTRYPOINT [ "node" ]
-
-CMD [ "server.js" ]
+CMD [ "--accept-session", "8080", "--no-tls" ]
