@@ -1,11 +1,13 @@
 const { Server } = require("socket.io");
 const io = new Server(5001, { /* options */ });
+
+process.stdin.setEncoding('utf8');
+process.stdin.setEncoding('utf8');
+
+const out = process.stdout.write.bind(process.stdout);
+
 io.on("connection", socket => {
-    console.log("New connection created");
-    socket.emit("msg", "Welcome message from server");
-    socket.on("msg", msg => {
-        console.log("Received message:", msg);
-        socket.emit("msg", "Replyaing to message: " + msg);
-    });
+    process.stdin.on('data', msg => socket.emit("msg", msg) );
+    socket.on("msg", out);
 });
 

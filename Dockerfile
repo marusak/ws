@@ -4,7 +4,7 @@ EXPOSE 5001
 
 WORKDIR "/ws"
 
-RUN dnf install -y npm && dnf clean all && npm install socket.io
+RUN dnf install -y npm cockpit-ws && dnf clean all && npm install socket.io
 
 COPY server.js .
 
